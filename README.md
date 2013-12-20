@@ -1,5 +1,7 @@
 # Random Unique ID
 
+[![Build Status](https://travis-ci.org/watu/random_unique_id.png?branch=master)](https://travis-ci.org/watu/random_unique_id)
+
 This gem will generate a random unique id for your active record records that you can use instead of their actual ID for
 all external interactions with users. The goal is for you to be able to hide how many records you have, for business
 purposes, but also to make IDs non-predictable.
