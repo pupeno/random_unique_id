@@ -20,15 +20,6 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "minitest", "~> 2.5.1"
-  spec.add_development_dependency "minitest-reporters"
-  spec.add_development_dependency "mocha"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "shoulda"
-  spec.add_development_dependency "sqlite3"
-
-  spec.add_dependency "activesupport", "~> 3.2.0"
-  spec.add_dependency "activerecord", "~> 3.2.0"
+  spec.add_dependency "activesupport", "> 3.2.0"
+  spec.add_dependency "activerecord", "> 3.2.0"
 end
