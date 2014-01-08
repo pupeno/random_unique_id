@@ -1,5 +1,5 @@
 # encoding: UTF-8
-# Copyright © 2013, Watu
+# Copyright © 2013, 2014, Watu
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)

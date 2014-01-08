@@ -1,5 +1,5 @@
 # encoding: UTF-8
-# Copyright © 2011, 2012, 2013, Watu
+# Copyright © 2011, 2012, 2013, 2014, Watu
 
 require "random_unique_id/version"
 require "securerandom"
