@@ -3,10 +3,13 @@
 
 require "rubygems"
 
+# Test coverage
 require "simplecov"
+require "coveralls"
 SimpleCov.start do
   add_filter "/test/"
 end
+Coveralls.wear! # Comment out this line to have the local coverage generated.
 
 require "minitest/autorun"
 require "minitest/reporters"
@@ -28,9 +31,6 @@ ActiveRecord::Base.logger = Logger.new(STDERR)
 ActiveRecord::Base.logger.level = Logger::WARN
 ActiveRecord::Base.configurations = {"sqlite3" => {adapter: "sqlite3", database: ":memory:"}}
 ActiveRecord::Base.establish_connection("sqlite3")
-
-require "coveralls"
-Coveralls.wear!
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
