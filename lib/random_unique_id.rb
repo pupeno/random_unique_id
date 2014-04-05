@@ -10,6 +10,18 @@ module RandomUniqueId
   extend ActiveSupport::Concern
 
   module ClassMethods
+    # Mark a model as containing a random unique id. A field called rid of type string is required. It's recommended
+    # that it's indexed and unique. For example, you could add it to a migration like this:
+    #   def up
+    #     add_column :posts, :rid, :string
+    #     add_index :posts, :rid, :unique
+    #   end
+    #
+    # and then to the model like this:
+    #   class Post
+    #     has_random_unique_id
+    #     # ... other stuff
+    #   end
     def has_random_unique_id
       validates :rid, presence: true, uniqueness: true
       before_validation :generate_random_unique_id, if: Proc.new { |r| r.rid.blank? }
