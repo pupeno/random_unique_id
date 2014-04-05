@@ -32,25 +32,14 @@ module RandomUniqueId
       define_rid_method = attrs[1].try(:delete, :rid)
       super.tap do
         if define_rid_method != false
-          rel_name = attrs[0]
-          rel = reflections[rel_name]
+          relationship_name = attrs[0]
+          rel = reflections[relationship_name]
 
           return if rel.options[:polymorphic] # If we don't know the class, we cannot find the record by rid.
 
-          class_name = rel.options[:class_name] || rel_name.to_s.classify
-          klass = class_name.constantize
-
-          if klass.attribute_names.include? "rid"
-            define_method("#{rel_name}_rid") do
-              self.send(rel_name).try(:rid)
-            end
-
-            define_method("#{rel_name}_rid=") do |rid|
-              record = klass.find_by_rid(rid)
-              self.send("#{rel_name}=", record)
-              record
-            end
-          end
+          class_name = rel.options[:class_name] || relationship_name.to_s.classify
+          related_class = class_name.constantize
+          define_rid_accessors(related_class, relationship_name) if related_class.attribute_names.include? "rid"
         end
       end
     end
@@ -80,6 +69,19 @@ module RandomUniqueId
       end
     end
 
+    private
+
+    def define_rid_accessors(related_class, relationship_name)
+      define_method("#{relationship_name}_rid") do
+        self.send(relationship_name).try(:rid)
+      end
+
+      define_method("#{relationship_name}_rid=") do |rid|
+        record = related_class.find_by_rid(rid)
+        self.send("#{relationship_name}=", record)
+        record
+      end
+    end
   end
 
   def generate_random_unique_id(n=5, field="rid")
