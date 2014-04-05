@@ -28,6 +28,7 @@ require "mocha/setup"
 
 # Database setup
 require "active_record"
+require "logger"
 ActiveRecord::Base.logger = Logger.new(STDERR)
 ActiveRecord::Base.logger.level = Logger::WARN
 ActiveRecord::Base.configurations = {"sqlite3" => {adapter: "sqlite3", database: ":memory:"}}
