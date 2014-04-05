@@ -8,6 +8,7 @@ require "random_unique_id"
 ActiveRecord::Schema.define(version: 0) do
   create_table :blogs do |t|
     t.string :rid
+    t.string :name
   end
   add_index :blogs, :rid, unique: true
 
@@ -76,6 +77,21 @@ class RandomUniqueIdTest < MiniTest::Unit::TestCase
 
       assert_equal blog, @text_post.blog
       assert_equal blog.rid, @text_post.blog_rid
+    end
+
+    should "populate a table with rids" do
+      # Create a bunch of blogs without rid by manually inserting them into the talbe.
+      rid_less_records = 10
+      5.times { Blog.create! }
+      existing_rids = Blog.all.map(&:rid).compact
+      rid_less_records.times { Blog.connection.execute("INSERT INTO blogs (name) VALUES ('Blag')") }
+      assert_equal rid_less_records, Blog.where(:rid => nil).count # Just to be sure this test is being effective.
+
+      rids_populated = 0
+      Blog.populate_random_unique_ids { |_, rid_just_populated| rids_populated += 1 if rid_just_populated }
+      assert_equal rid_less_records, rids_populated
+      assert_equal 0, Blog.where(:rid => nil).count
+      assert_equal existing_rids.count, Blog.where(:rid => existing_rids).count # Make sure the existing rids where not touched.
     end
   end
 end

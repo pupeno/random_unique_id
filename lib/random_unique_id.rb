@@ -42,6 +42,32 @@ module RandomUniqueId
         end
       end
     end
+
+    # Populate all the blank rids in a table. This is useful when adding rids to a table that already has data in it.
+    # For example:
+    #   def up
+    #     add_column :posts, :rid, :string
+    #     add_index :posts, :rid, :unique
+    #     say_with_time "Post.populate_random_unique_ids" do
+    #       Post.reset_column_information
+    #       Post.populate_random_unique_ids { print "."}
+    #     end
+    #   end
+    #
+    # This method uses update_column to avoid running validations and callbacks. It will not change existing rids, so
+    # it's safe to call several times and a failure (even without a transaction) is not catastrophic.
+    def populate_random_unique_ids
+      find_each do |record|
+        rid_just_populated = false
+        if record.rid.blank?
+          record.generate_random_unique_id
+          record.update_column(:rid, record.rid)
+          rid_just_populated = true
+        end
+        yield(record, rid_just_populated) if block_given?
+      end
+    end
+
   end
 
   def generate_random_unique_id(n=5, field="rid")
