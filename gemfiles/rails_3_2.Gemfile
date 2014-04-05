@@ -5,7 +5,7 @@ source "https://rubygems.org"
 
 gem "bundler", "~> 1.3"
 gem "coveralls", require: false
-gem "minitest", "~> 2.5.1"
+gem "minitest", "~> 4.7.5"
 gem "minitest-reporters"
 gem "mocha"
 gem "rake"
