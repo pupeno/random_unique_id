@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/watu/random_unique_id.png?branch=master)](https://travis-ci.org/watu/random_unique_id)
 [![Coverage Status](https://coveralls.io/repos/watu/random_unique_id/badge.png?branch=master)](https://coveralls.io/r/watu/random_unique_id?branch=master)
 [![Code Climate](https://codeclimate.com/github/watu/random_unique_id.png)](https://codeclimate.com/github/watu/random_unique_id)
-[![Inline docs](http://inch-pages.github.io/github/watu/random_unique_id.png)](http://inch-pages.github.io/github/watu/random_unique_id)
+[![Inline docs](http://inch-ci.org/github/watu/random_unique_id.png)](http://inch-ci.org/github/watu/random_unique_id)
 [![Gem Version](https://badge.fury.io/rb/random_unique_id.png)](http://badge.fury.io/rb/random_unique_id)
 
 This gem will generate a random unique id for your active record records that you can use instead of their actual ID for
