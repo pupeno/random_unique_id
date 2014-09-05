@@ -3,14 +3,4 @@
 
 source "https://rubygems.org"
 
-gem "bundler", "~> 1.3"
-gem "coveralls", require: false
-gem "minitest", "~> 4.7.5"
-gem "minitest-reporters"
-gem "mocha"
-gem "rake"
-gem "simplecov"
-gem "shoulda"
-gem "sqlite3"
-gem "activesupport", "~> 3.2.0"
-gem "activerecord", "~> 3.2.0"
+gemspec
