@@ -32,7 +32,7 @@ require "logger"
 ActiveRecord::Base.logger = Logger.new(STDERR)
 ActiveRecord::Base.logger.level = Logger::WARN
 ActiveRecord::Base.configurations = {"sqlite3" => {adapter: "sqlite3", database: ":memory:"}}
-ActiveRecord::Base.establish_connection("sqlite3")
+ActiveRecord::Base.establish_connection(:sqlite3)
 
 # Make the code to be tested easy to load.
 $LOAD_PATH.unshift(File.dirname(__FILE__))
