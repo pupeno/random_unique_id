@@ -5,6 +5,7 @@
 [![Code Climate](https://codeclimate.com/github/watu/random_unique_id.png)](https://codeclimate.com/github/watu/random_unique_id)
 [![Inline docs](http://inch-ci.org/github/watu/random_unique_id.png)](http://inch-ci.org/github/watu/random_unique_id)
 [![Gem Version](https://badge.fury.io/rb/random_unique_id.png)](http://badge.fury.io/rb/random_unique_id)
+[![Dependency Status](https://gemnasium.com/watu/random_unique_id.svg)](https://gemnasium.com/watu/random_unique_id)
 
 This gem will generate a random unique id for your active record records that you can use instead of their actual ID for
 all external interactions with users. The goal is for you to be able to hide how many records you have, for business
