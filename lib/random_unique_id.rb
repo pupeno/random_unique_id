@@ -9,6 +9,9 @@ require "active_record"
 module RandomUniqueId
   extend ActiveSupport::Concern
 
+  # Collection of methods that will end as class methods of ActiveRecord::Base.
+  #
+  # @see ActiveSupport::Concern
   module ClassMethods
     # Mark a model as containing a random unique id. A field called rid of type string is required. It's recommended
     # that it's indexed and unique. For example, you could add it to a migration like this:
@@ -28,6 +31,13 @@ module RandomUniqueId
       define_method(:to_param) { rid }
     end
 
+    # Augment the ActiveRecord belongs_to to also define rid accessors. For example: if you blog post belongs_to an
+    # author, on top of the methods #author, #author=, #author_id and #author_id=, it'll also have #author_rid and
+    # #author_rid= that allow you to retrieve the RID of the author or set another author by using the RID.
+    #
+    # @param attrs [Array] same as the parameters for ActiveRecord::Associations::ClassMethods.belongs_to except that
+    #   passing rid: false will prevent the rid accessors from beign defined.
+    # @see ActiveRecord::Associations::ClassMethods.belongs_to
     def belongs_to(*attrs)
       define_rid_method = attrs[1].try(:delete, :rid)
       super.tap do
@@ -71,6 +81,11 @@ module RandomUniqueId
 
     private
 
+    # Defines the setter and getter for the RID of a relationship.
+    #
+    # @param related_class [Class] class in which the RID methods are going to be defined.
+    # @param relationship_name [String] name of the relationship for which the RID methods are going to be defined.
+    # @see RandomUniqueId::ClassMethods.belongs_to
     def define_rid_accessors(related_class, relationship_name)
       define_method("#{relationship_name}_rid") do
         self.send(relationship_name).try(:rid)
@@ -84,6 +99,13 @@ module RandomUniqueId
     end
   end
 
+  # Generate and store the random unique id for the object.
+  #
+  # @param n [Integer] how long should the random string be.
+  # @param field [String] name of the field that contains the rid.
+  # @return [String] the random string.
+  # @see RandomUniqueId::ClassMethods#has_random_unique_id
+  # @see RandomUniqueId.generate_random_id
   def generate_random_unique_id(n=5, field="rid")
     # Find the topmost class before ActiveRecord::Base so that when we do queries, we don't end up with type=Whatever in the where clause.
     klass = self.class
@@ -102,6 +124,11 @@ module RandomUniqueId
     end while klass.unscoped.where(field => self.send(field)).exists?
   end
 
+  # By a cunning use of SecureRandom.urlsafe_base64, quickly generate an alphanumeric random string.
+  #
+  # @param n [Integer] how long should the random string be.
+  # @return [String] the random string.
+  # @see RandomUniqueId#generate_random_unique_id
   def self.generate_random_id(n=10)
     # IMPORTANT: don't ever generate dashes or underscores in the RIDs as they are likely to end up in the UI in Rails
     # and they'll be converted to something else by jquery ujs or something like that.
