@@ -5,13 +5,13 @@ Authoritative changelog in README.md.
 - Started testing Rails 4.1 (fixed some deprecation warnings).
 - Improved documentation
 
-## Version 0.2.1
+## Version 0.2.1 (May 27, 2014)
 - Internal refactorings.
 
-## Version 0.2.0
+## Version 0.2.0 (Apr 5, 2014)
 - Added method populate_random_unique_ids.
 - Improved documentation
 - Started testing with Ruby 2.1.
 
-## Version 0.1.0
+## Version 0.1.0 (Jan 6, 2014)
 - Initial release of the code extracted from [Watu](http://github.com/watu).
