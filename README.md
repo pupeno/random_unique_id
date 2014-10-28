@@ -11,8 +11,8 @@ This gem will generate a random unique id for your active record records that yo
 all external interactions with users. The goal is for you to be able to hide how many records you have, for business
 purposes, but also to make IDs non-predictable.
 
-This gem is built to work with Ruby 1.9, 2.0, 2.1 as well as with Rails 3.2 and 4.0. All of these cases are
-[continuously tested for](https://travis-ci.org/watu/random_unique_id.png?branch=master).
+This gem is built to work with Ruby 1.9, 2.0, 2.1 as well as with Rails 3.2, 4.0 and 4.1. All of these cases are
+[continuously tested for](https://travis-ci.org/watu/random_unique_id).
 
 ## Installation
 
