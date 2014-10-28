@@ -71,7 +71,7 @@ records. For example:
 
 ## Changelog
 
-### Next version
+### Version 1.0.0 (Oct 28, 2014)
 - Added RandomUniqueId::Util.set_initial_ids.
 - Started testing Ruby 2.1.2 and 2.1.3.
 - Started testing Rails 4.1 (fixed some deprecation warnings).
