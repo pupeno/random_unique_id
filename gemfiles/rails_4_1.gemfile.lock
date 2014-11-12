@@ -41,6 +41,8 @@ GEM
       thor (>= 0.14.0)
     arel (5.0.1.20140414130214)
     builder (3.2.2)
+    codeclimate-test-reporter (0.4.1)
+      simplecov (>= 0.7.1, < 1.0.0)
     coveralls (0.7.1)
       multi_json (~> 1.3)
       rest-client
@@ -113,6 +115,7 @@ DEPENDENCIES
   actionmailer (~> 4.1.0)
   appraisal
   bundler
+  codeclimate-test-reporter
   coveralls
   minitest
   minitest-rails
