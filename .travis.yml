@@ -9,3 +9,7 @@ gemfile:
   - gemfiles/rails_3_2.gemfile
   - gemfiles/rails_4_0.gemfile
   - gemfiles/rails_4_1.gemfile
+addons:
+  code_climate:
+    repo_token:
+      secure: "ZRzKaV0l9b+TvfDzDw9Vw8KgCWUYyPhfP8ipsYehdwu4VbeQ+3hefQWN5zF3VMtO9tywBthi0fIxwmxbZGqcd0B3iYQ31yODQJOWIo9bUowYDnOzxQbRHjaALuNvE85+u7+RnXkgmMlEEgzoyVbROgP19QeHfk37K672vsg1POo="
