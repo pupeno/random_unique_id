@@ -69,6 +69,13 @@ records. For example:
       end
     end
 
+## Users
+
+This gem is being used by:
+
+- [Watu](https://watuapp.com)
+- You? please, let us know if you are using this gem.
+
 ## Changelog
 
 ### Version 1.0.0 (Oct 28, 2014)
