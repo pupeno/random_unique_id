@@ -73,7 +73,7 @@ module RandomUniqueId
       super.tap do
         if define_rid_method != false
           relationship_name = attrs[0]
-          rel = reflections[relationship_name]
+          rel = reflections[relationship_name] || reflections[relationship_name.to_s]
 
           return if rel.options[:polymorphic] # If we don't know the class, we cannot find the record by rid.
 

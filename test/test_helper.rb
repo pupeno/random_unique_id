@@ -36,3 +36,7 @@ ActiveRecord::Base.establish_connection(:sqlite3)
 
 # Shutup.
 I18n.enforce_available_locales = false # TODO: remove this line when it's not needed anymore.
+
+if ActiveSupport::TestCase.respond_to? :test_order=
+  ActiveSupport::TestCase.test_order = :random
+end

@@ -11,7 +11,7 @@ This gem will generate a random unique id for your active record records that yo
 all external interactions with users. The goal is for you to be able to hide how many records you have, for business
 purposes, but also to make IDs non-predictable.
 
-This gem is built to work with Ruby 1.9, 2.0, 2.1 as well as with Rails 3.2, 4.0 and 4.1. All of these cases are
+This gem is built to work with Ruby 1.9, 2.0, 2.1 as well as with Rails 3.2, 4.0, 4.1 and 4.2. All of these cases are
 [continuously tested for](https://travis-ci.org/watu/random_unique_id).
 
 ## Installation
@@ -94,8 +94,18 @@ Or globally in an initializer:
         min_rid_length: 10
     })
 
+## Users
+
+This gem is being used by:
+
+- [Watu](https://watuapp.com)
+- [MSTY](https://www.msty.com)
+- You? please, let us know if you are using this gem.
 
 ## Changelog
+
+### Version 1.0.1 (Dec 22, 2014)
+- Added support for Rails 4.2.
 
 ### Version 1.0.0 (Oct 28, 2014)
 - Added RandomUniqueId::Util.set_initial_ids.
@@ -117,7 +127,13 @@ Or globally in an initializer:
 ## Contributing
 
 1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am "Add some feature"`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+1. Create your feature branch (`git checkout -b my-new-feature`)
+1. Code your thing, write tests
+1. Run tests:
+
+        bundle install
+        appraisal
+        appraisal rake test
+1. Commit your changes (`git commit -am "Add some feature"`)
+1. Push to the branch (`git push origin my-new-feature`)
+1. Create new Pull Request
