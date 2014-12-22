@@ -69,6 +69,32 @@ records. For example:
       end
     end
 
+## Configuration
+
+There are 2 settings that are configurable for RandomUniqueId:
+
+- `min_rid_length:` If you have a large table, the default of 5 characters for an initial length may be a problem, since it may lead to
+    several "bounces" until a new unique RID gets generated. The gem scales well with this problem, since it makes
+    each subsequent try longer than the one before, but it may still may 3 or 4 DB hits for each record creation.
+    In that case, you may want to set it to start with a higher number directly.
+
+- `random_generation_method:` If you have a very large table, and having very long IDs is not a problem, you can choose to generate UUIDs instead
+    of short-ish Random IDs. This looks worse if you're displaying these IDs in a URL, but it allows to skip the check
+    for existence, which in a large table can make a large difference.
+    random_generation_method can be either `:rid` (the default) or `:uuid`
+
+Both of these settings can be specified on a per-model basis, when adding RandomUniqueId to the model:
+
+    has_random_unique_id(min_rid_length: 10)
+    has_random_unique_id(random_generation_method: :uuid)
+
+Or globally in an initializer:
+
+    RandomUniqueId.config({
+        min_rid_length: 10
+    })
+
+
 ## Changelog
 
 ### Version 1.0.0 (Oct 28, 2014)

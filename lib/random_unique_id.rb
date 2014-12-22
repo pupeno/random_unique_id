@@ -19,14 +19,12 @@ module RandomUniqueId
   #       min_rid_length: 5
   #     })
   #
-  #
-  # Configuration parameters are:
-  #    - :random_generation_mthod - :rid or :uuid
-  #       If set to :rid (the default), RandomUniqueID will generate a short-ish random ID, and check that it is unique
-  #       If set to :uuid, it will generate a UUID, and skip the check. This is better for performance, and bad for readability
-  #    - :min_rid_length - Sets the minimum length RandomUniqueID will generate. Defaults to 5
-  def self.config(options = {})
-    defaults = { random_generation_method: :rid, min_rid_length: 5 }
+  # @param random_generation_method [Symbol] the method to generate random IDs, `:rid` or `:uuid`.
+  #   `:rid` will generate a short-ish random ID, and check that it is unique
+  #   `:uuid` will generate a UUID, and skip the check. This is better for performance, and bad for readability of IDs
+  # @param min_rid_length [FixNum] the minimum length RandomUniqueID will generate. Defaults to 5
+  def self.config(options={})
+    defaults = {random_generation_method: :rid, min_rid_length: 5}
     @@config ||= defaults
     @@config = @@config.merge(options)
     @@config
@@ -51,9 +49,9 @@ module RandomUniqueId
     #     # ... other stuff
     #   end
     #
-    # it can take as options the same values as RandomUniqueID.config, in case the generation method or minimum
-    # length needs to be overridden for one specific model
-    def has_random_unique_id(options = {})
+    # @param options [Hash] generation options, same as RandomUniqueID.config, in case the generation method or minimum
+    #   length needs to be overridden for one specific model
+    def has_random_unique_id(options={})
       options = RandomUniqueId.config.merge(options)
 
       validation_options = { presence: true}
@@ -140,7 +138,7 @@ module RandomUniqueId
   # @return [String] the random string.
   # @see RandomUniqueId::ClassMethods#has_random_unique_id
   # @see RandomUniqueId.generate_random_id
-  def generate_random_unique_id(n= self.random_unique_id_options[:min_rid_length], field= "rid")
+  def generate_random_unique_id(n=self.random_unique_id_options[:min_rid_length], field="rid")
     # Find the topmost class before ActiveRecord::Base so that when we do queries, we don't end up with type=Whatever in the where clause.
     klass = self.class
     self.class.ancestors.each do |k|
@@ -163,7 +161,6 @@ module RandomUniqueId
       else
         raise "Invalid random generation method: #{self.random_unique_id_options[:random_generation_method]}"
     end
-
   end
 
   # By a cunning use of SecureRandom.urlsafe_base64, quickly generate an alphanumeric random string.
@@ -180,7 +177,6 @@ module RandomUniqueId
     end
     return generated_rid
   end
-
 
   # Generate a UUID. Just a wrapper around SecureRandom.uuid
   # @return [String] the new UUID.
