@@ -30,8 +30,6 @@ module RandomUniqueId
     @@config
   end
 
-
-
   # Collection of methods that will end as class methods of ActiveRecord::Base.
   #
   # @see ActiveSupport::Concern
