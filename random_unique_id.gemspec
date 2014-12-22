@@ -10,9 +10,9 @@ Gem::Specification.new do |spec|
   spec.version       = RandomUniqueId::VERSION
   spec.authors       = ["J. Pablo Fernández"]
   spec.email         = ["pupeno@watuapp.com"]
-  spec.description   = %q{Generate random but unique ids for your active record records.}
-  spec.summary       = %q{Generate random but unique ids for your active record records.}
   spec.homepage      = "https://github.com/watu/random_unique_id"
+  spec.summary       = %q{Generate random but unique ids for your active record records.}
+  spec.description   = %q{Generate random but unique ids for your active record records.}
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
