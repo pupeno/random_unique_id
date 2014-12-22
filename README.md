@@ -78,6 +78,9 @@ This gem is being used by:
 
 ## Changelog
 
+### Version 1.0.1 (Dec 22, 2014)
+- Added support for Rails 4.2.
+
 ### Version 1.0.0 (Oct 28, 2014)
 - Added RandomUniqueId::Util.set_initial_ids.
 - Started testing Ruby 2.1.2 and 2.1.3.
