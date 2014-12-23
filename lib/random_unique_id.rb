@@ -55,7 +55,7 @@ module RandomUniqueId
       validates(:rid, presence: true)
       validates(:rid, uniqueness: true) if options[:random_generation_method] != :uuid # If we're generating UUIDs, don't check for uniqueness
 
-      before_validation :generate_random_unique_id, if: Proc.new { |r| r.rid.blank? }
+      before_validation :populate_rid_field, if: Proc.new { |r| r.rid.blank? }
       define_method(:to_param) { rid }
       define_method(:random_unique_id_options) { options } # I don't think this is the best way to store this, but I didn't find a better one.
     end
@@ -100,7 +100,7 @@ module RandomUniqueId
       find_each do |record|
         rid_just_populated = false
         if record.rid.blank?
-          record.generate_random_unique_id
+          record.populate_rid_field
           record.update_column(:rid, record.rid)
           rid_just_populated = true
         end
@@ -130,12 +130,12 @@ module RandomUniqueId
 
   # Generate and store the random unique id for the object.
   #
-  # @param n [Integer] how long should the random string be.
+  # @param n [Integer] how long should the random string be. Only applicable for `:rid` type.
   # @param field [String] name of the field that contains the rid.
   # @return [String] the random string.
   # @see RandomUniqueId::ClassMethods#has_random_unique_id
   # @see RandomUniqueId.generate_random_id
-  def generate_random_unique_id(n=self.random_unique_id_options[:min_rid_length], field="rid")
+  def populate_rid_field(n=self.random_unique_id_options[:min_rid_length], field="rid")
     case random_unique_id_options[:random_generation_method]
       when :rid
         self.send("#{field}=", find_unique_random_id(field, n))
@@ -162,7 +162,7 @@ module RandomUniqueId
   #
   # @param n [Integer] how long should the random string be.
   # @return [String] the random string.
-  # @see RandomUniqueId#generate_random_unique_id
+  # @see RandomUniqueId#populate_rid_field
   def self.generate_random_id(n=10)
     # IMPORTANT: don't ever generate dashes or underscores in the RIDs as they are likely to end up in the UI in Rails
     # and they'll be converted to something else by jquery ujs or something like that.
@@ -175,7 +175,7 @@ module RandomUniqueId
 
   # Generate a UUID. Just a wrapper around SecureRandom.uuid
   # @return [String] the new UUID.
-  # @see RandomUniqueId#generate_random_unique_id
+  # @see RandomUniqueId#populate_rid_field
   def self.generate_uuid
     SecureRandom.uuid
   end
