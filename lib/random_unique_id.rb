@@ -136,9 +136,9 @@ module RandomUniqueId
   # @see RandomUniqueId::ClassMethods#has_random_unique_id
   # @see RandomUniqueId.generate_random_id
   def generate_random_unique_id(n=self.random_unique_id_options[:min_rid_length], field="rid")
-    klass = find_topmost_model_class
     case self.random_unique_id_options[:random_generation_method]
       when :rid
+        klass = find_topmost_model_class
         begin
           self.send("#{field}=", RandomUniqueId.generate_random_id(n))
           n += 1
