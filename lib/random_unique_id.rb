@@ -14,15 +14,15 @@ module RandomUniqueId
   # The global configuration for RandomUniqueID.
   # Set it in initializers
   #
-  #     RandomUniqueId.config({
-  #       random_generation_method: :rid,
-  #       min_rid_length: 5
-  #     })
+  #     RandomUniqueId.config(random_generation_method: :rid,
+  #                           min_rid_length: 5)
   #
-  # @param random_generation_method [Symbol] the method to generate random IDs, `:rid` or `:uuid`.
+  # @param [Hash] options
+  # @option options [Symbol] random_generation_method the method to generate random IDs, `:rid` or `:uuid`.
   #   `:rid` will generate a short-ish random ID, and check that it is unique
   #   `:uuid` will generate a UUID, and skip the check. This is better for performance, and bad for readability of IDs
-  # @param min_rid_length [FixNum] the minimum length RandomUniqueID will generate. Defaults to 5
+  # @option options [FixNum] min_rid_length the minimum length RandomUniqueID will generate. Defaults to 5
+  # @return [Hash] the configuration.
   def self.config(options={})
     defaults = {random_generation_method: :rid, min_rid_length: 5}
     @@config ||= defaults

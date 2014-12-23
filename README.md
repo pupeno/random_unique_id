@@ -90,9 +90,7 @@ Both of these settings can be specified on a per-model basis, when adding Random
 
 Or globally in an initializer:
 
-    RandomUniqueId.config({
-        min_rid_length: 10
-    })
+    RandomUniqueId.config(min_rid_length: 10)
 
 ## Users
 
