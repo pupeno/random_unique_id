@@ -1,5 +1,7 @@
 Authoritative changelog in README.md.
 
+## Next version
+
 ## Version 1.0.1 (Dec 22, 2014)
 - Added support for Rails 4.2.
 

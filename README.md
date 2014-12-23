@@ -78,6 +78,8 @@ This gem is being used by:
 
 ## Changelog
 
+### Next version
+
 ### Version 1.0.1 (Dec 22, 2014)
 - Added support for Rails 4.2.
 
@@ -108,6 +110,7 @@ This gem is being used by:
         bundle install
         appraisal
         appraisal rake test
+1. Add items to the changelog, both in the README and the CHANGELOG file.
 1. Commit your changes (`git commit -am "Add some feature"`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
