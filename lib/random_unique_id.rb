@@ -136,13 +136,12 @@ module RandomUniqueId
   # @see RandomUniqueId::ClassMethods#has_random_unique_id
   # @see RandomUniqueId.generate_random_id
   def generate_random_unique_id(n=self.random_unique_id_options[:min_rid_length], field="rid")
-    case self.random_unique_id_options[:random_generation_method]
+    case random_unique_id_options[:random_generation_method]
       when :rid
-        klass = find_topmost_model_class
         begin
           self.send("#{field}=", RandomUniqueId.generate_random_id(n))
           n += 1
-        end while klass.unscoped.where(field => self.send(field)).exists?
+        end while topmost_model_class.unscoped.where(field => self.send(field)).exists?
       when :uuid
         self.send("#{field}=", RandomUniqueId.generate_uuid)
       else
@@ -175,13 +174,15 @@ module RandomUniqueId
   # Find the topmost class before ActiveRecord::Base so that when we do queries, we don't end up with type=Whatever in
   # the where clause.
   # @return [Class] the class object
-  def find_topmost_model_class
-    klass = self.class
-    self.class.ancestors.select { |k| k.is_a? Class }.each do |k|
-      if k == ActiveRecord::Base
-        return klass
+  def topmost_model_class
+    @topmost_model_class ||= begin
+      klass = self.class
+      self.class.ancestors.select { |k| k.is_a? Class }.each do |k|
+        if k == ActiveRecord::Base
+          return klass
+        end
+        klass = k
       end
-      klass = k
     end
   end
 end
