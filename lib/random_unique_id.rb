@@ -52,9 +52,8 @@ module RandomUniqueId
     def has_random_unique_id(options={})
       options = RandomUniqueId.config.merge(options)
 
-      validation_options = { presence: true}
-      validation_options[:uniqueness] = true if options[:random_generation_method] != :uuid # If we're generating UUIDs, don't check for uniqueness
-      validates :rid, validation_options
+      validates(:rid, presence: true)
+      validates(:rid, uniqueness: true) if options[:random_generation_method] != :uuid # If we're generating UUIDs, don't check for uniqueness
 
       before_validation :generate_random_unique_id, if: Proc.new { |r| r.rid.blank? }
       define_method(:to_param) { rid }
