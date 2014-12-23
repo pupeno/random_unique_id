@@ -130,12 +130,13 @@ This gem is being used by:
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Code your thing, write tests
-1. Run tests:
+1. Code your thing
+1. Write and run tests:
 
         bundle install
         appraisal
         appraisal rake test
+1. Write documentation and make sure it looks good: yard server --reload
 1. Add items to the changelog, both in the README and the CHANGELOG file.
 1. Commit your changes (`git commit -am "Add some feature"`)
 1. Push to the branch (`git push origin my-new-feature`)
