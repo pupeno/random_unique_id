@@ -14,17 +14,19 @@ module RandomUniqueId
   # The global configuration for RandomUniqueID.
   # Set it in initializers
   #
-  #     RandomUniqueId.config(random_generation_method: :short,
+  #     RandomUniqueId.config(field: :rid,
+  #                           random_generation_method: :short,
   #                           min_rid_length: 5)
   #
   # @param [Hash] options
+  # @option options [Symbol] field the name of the field where the random unique id is stored.
   # @option options [Symbol] random_generation_method the method to generate random IDs, `:short` or `:uuid`.
   #   `:short` will generate a short-ish random ID, and check that it is unique
   #   `:uuid` will generate a UUID, and skip the check. This is better for performance, and bad for readability of IDs
   # @option options [FixNum] min_rid_length the minimum length RandomUniqueID will generate. Defaults to 5
   # @return [Hash] the configuration.
   def self.config(options={})
-    defaults = {random_generation_method: :short, min_rid_length: 5}
+    defaults = {field: :rid, random_generation_method: :short, min_rid_length: 5}
     @@config ||= defaults
     @@config = @@config.merge(options)
     @@config
@@ -52,11 +54,11 @@ module RandomUniqueId
     def has_random_unique_id(options={})
       options = RandomUniqueId.config.merge(options)
 
-      validates(:rid, presence: true)
-      validates(:rid, uniqueness: true) if options[:random_generation_method] != :uuid # If we're generating UUIDs, don't check for uniqueness
+      validates(options[:field], presence: true)
+      validates(options[:field], uniqueness: true) if options[:random_generation_method] != :uuid # If we're generating UUIDs, don't check for uniqueness
 
-      before_validation :populate_rid_field, if: Proc.new { |r| r.rid.blank? }
-      define_method(:to_param) { rid }
+      before_validation :populate_rid_field, if: Proc.new { |r| r.send(options[:field]).blank? }
+      define_method(:to_param) { send(options[:field]) }
       define_method(:random_unique_id_options) { options } # I don't think this is the best way to store this, but I didn't find a better one.
     end
 
@@ -99,9 +101,9 @@ module RandomUniqueId
     def populate_random_unique_ids
       find_each do |record|
         rid_just_populated = false
-        if record.rid.blank?
+        if record.send(record.random_unique_id_options[:field]).blank?
           record.populate_rid_field
-          record.update_column(:rid, record.rid)
+          record.update_column(record.random_unique_id_options[:field], record.send(record.random_unique_id_options[:field]))
           rid_just_populated = true
         end
         yield(record, rid_just_populated) if block_given?
@@ -117,7 +119,7 @@ module RandomUniqueId
     # @see RandomUniqueId::ClassMethods.belongs_to
     def define_rid_accessors(related_class, relationship_name)
       define_method("#{relationship_name}_rid") do
-        self.send(relationship_name).try(:rid)
+        self.send(relationship_name).try(random_unique_id_options[:field])
       end
 
       define_method("#{relationship_name}_rid=") do |rid|
@@ -135,10 +137,10 @@ module RandomUniqueId
   # @return [String] the random string.
   # @see RandomUniqueId::ClassMethods#has_random_unique_id
   # @see RandomUniqueId.generate_random_id
-  def populate_rid_field(n=self.random_unique_id_options[:min_rid_length], field="rid")
+  def populate_rid_field(n=random_unique_id_options[:min_rid_length], field=random_unique_id_options[:field])
     case random_unique_id_options[:random_generation_method]
       when :short
-        self.send("#{field}=", find_unique_random_id(field, n))
+        self.send("#{field}=", find_unique_random_id(n, field))
       when :uuid
         self.send("#{field}=", RandomUniqueId.generate_uuid)
       else
@@ -149,7 +151,7 @@ module RandomUniqueId
   # Generate random ids, increasing their size, until one is found that is not used for another record in the database.
   # @param n [Integer] how long should the random string be.
   # @param field [String] name of the field that contains the rid.
-  def find_unique_random_id(field, n)
+  def find_unique_random_id(n, field)
     potential_unique_random_id = nil
     begin
       potential_unique_random_id = RandomUniqueId.generate_random_id(n)

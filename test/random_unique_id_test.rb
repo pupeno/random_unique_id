@@ -20,11 +20,11 @@ ActiveRecord::Schema.define(version: 0) do
   add_index :posts, :rid, unique: true
 
   create_table :comments do |t|
-    t.string :rid
+    t.string :random_id
     t.string :text
     t.integer :post_id
   end
-  add_index :comments, :rid, unique: true
+  add_index :comments, :random_id, unique: true
 
   create_table :post_views do |t|
     t.string :rid
@@ -74,7 +74,7 @@ end
 
 class Comment < ActiveRecord::Base
   belongs_to :post
-  has_random_unique_id(min_rid_length: 10) # Comments have longer RIDs, since it's a big table and we were getting lots of collissions
+  has_random_unique_id(field: :random_id, min_rid_length: 10) # Comments have longer RIDs, since it's a big table and we were getting lots of collissions
 end
 
 class PostView < ActiveRecord::Base
@@ -125,18 +125,35 @@ class RandomUniqueIdTest < MiniTest::Unit::TestCase
     end
 
     should "populate a table with rids" do
-      # Create a bunch of blogs without rid by manually inserting them into the talbe.
+      # Create a bunch of blogs without rid by manually inserting them into the table.
       rid_less_records = 10
       5.times { Blog.create! }
       existing_rids = Blog.all.map(&:rid).compact
       rid_less_records.times { Blog.connection.execute("INSERT INTO blogs (name) VALUES ('Blag')") }
-      assert_equal rid_less_records, Blog.where(:rid => nil).count # Just to be sure this test is being effective.
+      assert_equal rid_less_records, Blog.where(rid: nil).count # Just to be sure this test is being effective.
 
       rids_populated = 0
       Blog.populate_random_unique_ids { |_, rid_just_populated| rids_populated += 1 if rid_just_populated }
       assert_equal rid_less_records, rids_populated
-      assert_equal 0, Blog.where(:rid => nil).count
-      assert_equal existing_rids.count, Blog.where(:rid => existing_rids).count # Make sure the existing rids where not touched.
+      assert_equal 0, Blog.where(rid: nil).count
+      assert_equal existing_rids.count, Blog.where(rid: existing_rids).count # Make sure the existing rids where not touched.
+    end
+
+    should "populate a table with rids with custom field name" do
+      # Create a bunch of comments without rid by manually inserting them into the table
+      rid_less_records = 10
+      blog = Blog.create!
+      post = Post.create!(blog: blog)
+      5.times { Comment.create!(post: post) }
+      existing_rids = Comment.all.map(&:random_id).compact
+      rid_less_records.times { Comment.connection.execute("INSERT INTO comments (post_id) VALUES (#{post.id})") }
+      assert_equal rid_less_records, Comment.where(random_id: nil).count # Just to be sure this test is being effective.
+
+      rids_populated = 0
+      Comment.populate_random_unique_ids { |_, rid_just_populated| rids_populated += 1 if rid_just_populated }
+      assert_equal rid_less_records, rids_populated
+      assert_equal 0, Comment.where(random_id: nil).count
+      assert_equal existing_rids.count, Comment.where(random_id: existing_rids).count # Make sure the existing rids where not touched.
     end
   end
 
@@ -172,7 +189,7 @@ class RandomUniqueIdTest < MiniTest::Unit::TestCase
 
     should "Generate long RID for model that requested min_rid_length" do
       comment = Comment.create!
-      assert_equal 10, comment.rid.length
+      assert_equal 10, comment.random_id.length
     end
 
     should "Generate UUID for model that requested UUID random_generation_method" do
