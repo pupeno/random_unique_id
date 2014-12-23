@@ -18,12 +18,48 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer :blog_id
   end
   add_index :posts, :rid, unique: true
+
+  create_table :comments do |t|
+    t.string :rid
+    t.string :text
+    t.integer :post_id
+  end
+  add_index :comments, :rid, unique: true
+
+  create_table :post_views do |t|
+    t.string :rid
+    t.string :ip_address
+    t.integer :post_id
+  end
+  add_index :post_views, :rid # NOT unique, for performance, it'll store UUIDs so we don't need to check
 end
 
 class Blog < ActiveRecord::Base
   has_many :posts
   has_random_unique_id
 end
+
+class BlogWithInvalidGenerationMethod < ActiveRecord::Base
+  self.table_name = "blogs"
+  has_random_unique_id(random_generation_method: :invalid) # Used to test the exception when you specify the wrong method
+end
+
+original_config = RandomUniqueId.config
+RandomUniqueId.config(random_generation_method: :uuid)
+
+class BlogWithUuid < ActiveRecord::Base
+  self.table_name = "blogs"
+  has_random_unique_id
+end
+
+RandomUniqueId.config(random_generation_method: :rid, min_rid_length: 12)
+
+class BlogWithLongRid < ActiveRecord::Base
+  self.table_name = "blogs"
+  has_random_unique_id
+end
+
+RandomUniqueId.config(original_config)
 
 class Post < ActiveRecord::Base
   belongs_to :blog
@@ -36,6 +72,15 @@ end
 class ImagePost < Post
 end
 
+class Comment < ActiveRecord::Base
+  belongs_to :post
+  has_random_unique_id(min_rid_length: 10) # Comments have longer RIDs, since it's a big table and we were getting lots of collissions
+end
+
+class PostView < ActiveRecord::Base
+  belongs_to :post
+  has_random_unique_id(random_generation_method: :uuid) # Post Views have UUIDs instead of RIDs, since the table is ginormous, so it can't check for existence every time.
+end
 
 class RandomUniqueIdTest < MiniTest::Unit::TestCase
   context "With a record with random id" do
@@ -92,6 +137,47 @@ class RandomUniqueIdTest < MiniTest::Unit::TestCase
       assert_equal rid_less_records, rids_populated
       assert_equal 0, Blog.where(:rid => nil).count
       assert_equal existing_rids.count, Blog.where(:rid => existing_rids).count # Make sure the existing rids where not touched.
+    end
+  end
+
+  context "With an invalid generation method" do
+    should "Raise exception on RID geneartion" do
+      assert_raises RuntimeError do
+        BlogWithInvalidGenerationMethod.create!
+      end
+    end
+  end
+
+  # Tests for configuration options, both global and model overrides
+  context "With a global configuration for UUIDs" do
+    should "generate UUID" do
+      blog = BlogWithUuid.create!
+      assert_match /(\w{8}(-\w{4}){3}-\w{12}?)/, blog.rid
+    end
+  end
+
+  context "With a global configuration for long RIDs" do
+    should "generate long RID" do
+      blog = BlogWithLongRid.create!
+      assert blog.rid.length >= 12, "RID must be at least 12 chars long"
+      assert !(blog.rid =~ /(\w{8}(-\w{4}){3}-\w{12}?)/), "RID must not be a UUID"
+    end
+  end
+
+  context "With models that have overrides for RID configuration" do
+    should "Generate short RID for normal model" do
+      blog = Blog.create!
+      assert_equal 5, blog.rid.length
+    end
+
+    should "Generate long RID for model that requested min_rid_length" do
+      comment = Comment.create!
+      assert_equal 10, comment.rid.length
+    end
+
+    should "Generate UUID for model that requested UUID random_generation_method" do
+      postview = PostView.create!
+      assert_match /(\w{8}(-\w{4}){3}-\w{12}?)/, postview.rid
     end
   end
 end
