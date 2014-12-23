@@ -51,13 +51,9 @@ module RandomUniqueId
     #   length needs to be overridden for one specific model
     def has_random_unique_id(options={})
       options = RandomUniqueId.config.merge(options)
-
-      validates(options[:field], presence: true)
-      validates(options[:field], uniqueness: true) if options[:random_generation_method] != :uuid # If we're generating UUIDs, don't check for uniqueness
-
       before_validation :populate_rid_field, if: Proc.new { |r| r.send(options[:field]).blank? }
-      define_method(:to_param) { send(options[:field]) }
-      define_method(:random_unique_id_options) { options } # I don't think this is the best way to store this, but I didn't find a better one.
+      add_rid_related_validations(options)
+      add_rid_related_methods(options)
     end
 
     # Augment the ActiveRecord belongs_to to also define rid accessors. For example: if you blog post belongs_to an
@@ -109,6 +105,20 @@ module RandomUniqueId
     end
 
     private
+
+    # Add the rid related methods to the model.
+    # @param options [Hash] same as in RandomUniqueID.config
+    def add_rid_related_methods(options)
+      define_method(:to_param) { send(options[:field]) }
+      define_method(:random_unique_id_options) { options } # I don't think this is the best way to store this, but I didn't find a better one.
+    end
+
+    # Add the rid related validations to the model.
+    # @param options [Hash] same as in RandomUniqueID.config
+    def add_rid_related_validations(options)
+      validates(options[:field], presence: true)
+      validates(options[:field], uniqueness: true) if options[:random_generation_method] != :uuid  # If we're generating UUIDs, don't check for uniqueness
+    end
 
     # Defines the setter and getter for the RID of a relationship.
     #
