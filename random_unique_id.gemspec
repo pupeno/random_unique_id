@@ -8,7 +8,7 @@ require "random_unique_id/version"
 Gem::Specification.new do |spec|
   spec.name          = "random_unique_id"
   spec.version       = RandomUniqueId::VERSION
-  spec.authors       = ["J. Pablo Fernández"]
+  spec.authors       = ["J. Pablo Fernández", "Daniel Magliola"]
   spec.email         = ["pupeno@watuapp.com"]
   spec.homepage      = "https://github.com/watu/random_unique_id"
   spec.summary       = %q{Generate random but unique ids for your active record records.}
