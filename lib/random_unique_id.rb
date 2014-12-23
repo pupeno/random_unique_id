@@ -26,10 +26,8 @@ module RandomUniqueId
   # @option options [FixNum] min_rid_length the minimum length RandomUniqueID will generate. Defaults to 5
   # @return [Hash] the configuration.
   def self.config(options={})
-    defaults = {field: :rid, random_generation_method: :short, min_rid_length: 5}
-    @@config ||= defaults
+    @@config ||= {field: :rid, random_generation_method: :short, min_rid_length: 5}
     @@config = @@config.merge(options)
-    @@config
   end
 
   # Collection of methods that will end as class methods of ActiveRecord::Base.
