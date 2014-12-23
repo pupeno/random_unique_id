@@ -81,7 +81,7 @@ There are 2 settings that are configurable for RandomUniqueId:
 - `random_generation_method:` If you have a very large table, and having very long IDs is not a problem, you can choose to generate UUIDs instead
     of short-ish Random IDs. This looks worse if you're displaying these IDs in a URL, but it allows to skip the check
     for existence, which in a large table can make a large difference.
-    random_generation_method can be either `:rid` (the default) or `:uuid`
+    random_generation_method can be either `:short` (the default) or `:uuid`
 
 Both of these settings can be specified on a per-model basis, when adding RandomUniqueId to the model:
 

@@ -52,7 +52,7 @@ class BlogWithUuid < ActiveRecord::Base
   has_random_unique_id
 end
 
-RandomUniqueId.config(random_generation_method: :rid, min_rid_length: 12)
+RandomUniqueId.config(random_generation_method: :short, min_rid_length: 12)
 
 class BlogWithLongRid < ActiveRecord::Base
   self.table_name = "blogs"

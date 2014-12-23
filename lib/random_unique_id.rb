@@ -14,17 +14,17 @@ module RandomUniqueId
   # The global configuration for RandomUniqueID.
   # Set it in initializers
   #
-  #     RandomUniqueId.config(random_generation_method: :rid,
+  #     RandomUniqueId.config(random_generation_method: :short,
   #                           min_rid_length: 5)
   #
   # @param [Hash] options
-  # @option options [Symbol] random_generation_method the method to generate random IDs, `:rid` or `:uuid`.
-  #   `:rid` will generate a short-ish random ID, and check that it is unique
+  # @option options [Symbol] random_generation_method the method to generate random IDs, `:short` or `:uuid`.
+  #   `:short` will generate a short-ish random ID, and check that it is unique
   #   `:uuid` will generate a UUID, and skip the check. This is better for performance, and bad for readability of IDs
   # @option options [FixNum] min_rid_length the minimum length RandomUniqueID will generate. Defaults to 5
   # @return [Hash] the configuration.
   def self.config(options={})
-    defaults = {random_generation_method: :rid, min_rid_length: 5}
+    defaults = {random_generation_method: :short, min_rid_length: 5}
     @@config ||= defaults
     @@config = @@config.merge(options)
     @@config
@@ -130,14 +130,14 @@ module RandomUniqueId
 
   # Generate and store the random unique id for the object.
   #
-  # @param n [Integer] how long should the random string be. Only applicable for `:rid` type.
+  # @param n [Integer] how long should the random string be. Only applicable for `:short` type.
   # @param field [String] name of the field that contains the rid.
   # @return [String] the random string.
   # @see RandomUniqueId::ClassMethods#has_random_unique_id
   # @see RandomUniqueId.generate_random_id
   def populate_rid_field(n=self.random_unique_id_options[:min_rid_length], field="rid")
     case random_unique_id_options[:random_generation_method]
-      when :rid
+      when :short
         self.send("#{field}=", find_unique_random_id(field, n))
       when :uuid
         self.send("#{field}=", RandomUniqueId.generate_uuid)
