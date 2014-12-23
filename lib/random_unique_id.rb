@@ -138,15 +138,24 @@ module RandomUniqueId
   def generate_random_unique_id(n=self.random_unique_id_options[:min_rid_length], field="rid")
     case random_unique_id_options[:random_generation_method]
       when :rid
-        begin
-          self.send("#{field}=", RandomUniqueId.generate_random_id(n))
-          n += 1
-        end while topmost_model_class.unscoped.where(field => self.send(field)).exists?
+        self.send("#{field}=", find_unique_random_id(field, n))
       when :uuid
         self.send("#{field}=", RandomUniqueId.generate_uuid)
       else
         raise "Invalid random generation method: #{self.random_unique_id_options[:random_generation_method]}"
     end
+  end
+
+  # Generate random ids, increasing their size, until one is found that is not used for another record in the database.
+  # @param n [Integer] how long should the random string be.
+  # @param field [String] name of the field that contains the rid.
+  def find_unique_random_id(field, n)
+    potential_unique_random_id = nil
+    begin
+      potential_unique_random_id = RandomUniqueId.generate_random_id(n)
+      n += 1
+    end while topmost_model_class.unscoped.where(field => potential_unique_random_id).exists?
+    potential_unique_random_id
   end
 
   # By a cunning use of SecureRandom.urlsafe_base64, quickly generate an alphanumeric random string.
