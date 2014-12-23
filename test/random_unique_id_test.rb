@@ -96,9 +96,9 @@ class RandomUniqueIdTest < MiniTest::Unit::TestCase
 
     should "resolve random id collision" do
       # Mock RandomUniqueId to return a collision on the first call, and hopefully a non collision on the second, expecting n to grow by one.
-      RandomUniqueId.expects(:generate_random_id).with(5).returns(@text_post.rid)
+      RandomUniqueId.expects(:generate_short_random_id).with(5).returns(@text_post.rid)
       new_rid = @text_post.rid + "i"
-      RandomUniqueId.expects(:generate_random_id).with(6).returns(new_rid)
+      RandomUniqueId.expects(:generate_short_random_id).with(6).returns(new_rid)
 
       new_record = TextPost.create! # No exception should be raised.
       assert_equal new_rid, new_record.rid
@@ -106,9 +106,9 @@ class RandomUniqueIdTest < MiniTest::Unit::TestCase
 
     should "resolve random id collision in different classes of the same table (due to STI)" do
       # Mock RandomUniqueId to return a collision on the first call, and hopefully a non collision on the second, expecting n to grow by one.
-      RandomUniqueId.expects(:generate_random_id).with(5).returns(@text_post.rid)
+      RandomUniqueId.expects(:generate_short_random_id).with(5).returns(@text_post.rid)
       new_rid = @text_post.rid + "i"
-      RandomUniqueId.expects(:generate_random_id).with(6).returns(new_rid)
+      RandomUniqueId.expects(:generate_short_random_id).with(6).returns(new_rid)
 
       new_record = ImagePost.create! # No exception should be raised.
       assert_equal new_rid, new_record.rid

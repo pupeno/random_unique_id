@@ -132,15 +132,15 @@ module RandomUniqueId
 
   # Generate and store the random unique id for the object.
   #
-  # @param n [Integer] how long should the random string be. Only applicable for `:short` type.
+  # @param length [Integer] how long should the random string be. Only applicable for `:short` type.
   # @param field [String] name of the field that contains the rid.
   # @return [String] the random string.
   # @see RandomUniqueId::ClassMethods#has_random_unique_id
   # @see RandomUniqueId.generate_random_id
-  def populate_rid_field(n=random_unique_id_options[:min_rid_length], field=random_unique_id_options[:field])
+  def populate_rid_field(length=random_unique_id_options[:min_rid_length], field=random_unique_id_options[:field])
     case random_unique_id_options[:random_generation_method]
       when :short
-        self.send("#{field}=", find_unique_random_id(n, field))
+        self.send("#{field}=", generate_short_random_unique_id(length, field))
       when :uuid
         self.send("#{field}=", RandomUniqueId.generate_uuid)
       else
@@ -149,37 +149,15 @@ module RandomUniqueId
   end
 
   # Generate random ids, increasing their size, until one is found that is not used for another record in the database.
-  # @param n [Integer] how long should the random string be.
+  # @param length [Integer] how long should the random string be.
   # @param field [String] name of the field that contains the rid.
-  def find_unique_random_id(n, field)
+  def generate_short_random_unique_id(length, field)
     potential_unique_random_id = nil
     begin
-      potential_unique_random_id = RandomUniqueId.generate_random_id(n)
-      n += 1
+      potential_unique_random_id = RandomUniqueId.generate_short_random_id(length)
+      length += 1
     end while topmost_model_class.unscoped.where(field => potential_unique_random_id).exists?
     potential_unique_random_id
-  end
-
-  # By a cunning use of SecureRandom.urlsafe_base64, quickly generate an alphanumeric random string.
-  #
-  # @param n [Integer] how long should the random string be.
-  # @return [String] the random string.
-  # @see RandomUniqueId#populate_rid_field
-  def self.generate_random_id(n=10)
-    # IMPORTANT: don't ever generate dashes or underscores in the RIDs as they are likely to end up in the UI in Rails
-    # and they'll be converted to something else by jquery ujs or something like that.
-    generated_rid = ""
-    while generated_rid.length < n
-      generated_rid = (generated_rid + SecureRandom.urlsafe_base64(n * 3).downcase.gsub(/[^a-z0-9]/, ""))[0..(n-1)]
-    end
-    return generated_rid
-  end
-
-  # Generate a UUID. Just a wrapper around SecureRandom.uuid
-  # @return [String] the new UUID.
-  # @see RandomUniqueId#populate_rid_field
-  def self.generate_uuid
-    SecureRandom.uuid
   end
 
   # Find the topmost class before ActiveRecord::Base so that when we do queries, we don't end up with type=Whatever in
@@ -195,6 +173,28 @@ module RandomUniqueId
         klass = k
       end
     end
+  end
+
+  # By a cunning use of SecureRandom.urlsafe_base64, quickly generate an alphanumeric random string.
+  #
+  # @param length [Integer] how long should the random string be.
+  # @return [String] the random string.
+  # @see RandomUniqueId#populate_rid_field
+  def self.generate_short_random_id(length=10)
+    # IMPORTANT: don't ever generate dashes or underscores in the RIDs as they are likely to end up in the UI in Rails
+    # and they'll be converted to something else by jquery ujs or something like that.
+    generated_rid = ""
+    while generated_rid.length < length
+      generated_rid = (generated_rid + SecureRandom.urlsafe_base64(length * 3).downcase.gsub(/[^a-z0-9]/, ""))[0..(length-1)]
+    end
+    return generated_rid
+  end
+
+  # Generate a UUID. Just a wrapper around SecureRandom.uuid
+  # @return [String] the new UUID.
+  # @see RandomUniqueId#populate_rid_field
+  def self.generate_uuid
+    SecureRandom.uuid
   end
 end
 
