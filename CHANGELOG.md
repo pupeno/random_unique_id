@@ -1,6 +1,8 @@
 Authoritative changelog in README.md.
 
 ## Next version
+- Added global configuration.
+- Added UUID generation.
 
 ## Version 1.0.1 (Dec 22, 2014)
 - Added support for Rails 4.2.
