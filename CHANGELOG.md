@@ -1,6 +1,6 @@
 Authoritative changelog in README.md.
 
-## Next version
+## Version 1.1.0 (Jan 7, 2015)
 - Added global configuration.
 - Added UUID generation.
 - Allow changing the name of the field used for the random id.

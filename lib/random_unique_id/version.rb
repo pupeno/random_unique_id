@@ -2,5 +2,5 @@
 # Copyright © 2013, 2014, 2015, Watu
 
 module RandomUniqueId
-  VERSION = "1.0.1"
+  VERSION = "1.1.0"
 end
