@@ -1,4 +1,4 @@
-Copyright © 2013, 2014, Watu
+Copyright © 2013, 2014, 2015, Watu
 
 MIT License
 

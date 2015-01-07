@@ -1,4 +1,4 @@
-# Copyright © 2014, Watu
+# Copyright © 2014, 2015, Watu
 
 # Some utilities that might be useful if you are using RandomUniqueId. This file needs to be explicitely included:
 #
