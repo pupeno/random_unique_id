@@ -2,6 +2,7 @@
 
 appraise "rails-3_2" do
   gem "actionmailer", "~> 3.2.0"
+  gem "minitest", "~> 4.7.5"
 end
 
 appraise "rails-4_0" do
