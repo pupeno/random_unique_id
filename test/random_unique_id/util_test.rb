@@ -2,7 +2,6 @@
 
 require_relative "../test_helper"
 
-require "random_unique_id"
 require "random_unique_id/util"
 
 class RandomUniqueId::UtilTest < MiniTest::Unit::TestCase
