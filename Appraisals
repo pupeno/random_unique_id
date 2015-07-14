@@ -1,4 +1,4 @@
-# Copyright © 2014, 2015, Watu
+# Copyright © 2014, 2015, Carousel Apps
 
 appraise "rails-3_2" do
   gem "actionmailer", "~> 3.2.0"

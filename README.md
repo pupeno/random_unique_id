@@ -1,18 +1,18 @@
 # Random Unique ID
 
-[![Build Status](https://travis-ci.org/watu/random_unique_id.png?branch=master)](https://travis-ci.org/watu/random_unique_id)
-[![Coverage Status](https://coveralls.io/repos/watu/random_unique_id/badge.png?branch=master)](https://coveralls.io/r/watu/random_unique_id?branch=master)
-[![Code Climate](https://codeclimate.com/github/watu/random_unique_id.png)](https://codeclimate.com/github/watu/random_unique_id)
-[![Inline docs](http://inch-ci.org/github/watu/random_unique_id.png)](http://inch-ci.org/github/watu/random_unique_id)
+[![Build Status](https://travis-ci.org/carouselapps/random_unique_id.svg?branch=master)](https://travis-ci.org/carouselapps/random_unique_id)
+[![Coverage Status](https://coveralls.io/repos/carouselapps/random_unique_id/badge.svg?branch=master&service=github)](https://coveralls.io/github/carouselapps/random_unique_id?branch=master) 
+[![Code Climate](https://codeclimate.com/github/carouselapps/random_unique_id.png)](https://codeclimate.com/github/carouselapps/random_unique_id)
+[![Inline docs](http://inch-ci.org/github/carouselapps/random_unique_id.svg?branch=master)](http://inch-ci.org/github/carouselapps/random_unique_id)
 [![Gem Version](https://badge.fury.io/rb/random_unique_id.png)](http://badge.fury.io/rb/random_unique_id)
-[![Dependency Status](https://gemnasium.com/watu/random_unique_id.svg)](https://gemnasium.com/watu/random_unique_id)
+[![Dependency Status](https://gemnasium.com/carouselapps/random_unique_id.svg)](https://gemnasium.com/carouselapps/random_unique_id)
 
 This gem will generate a random unique id for your active record records that you can use instead of their actual ID for
 all external interactions with users. The goal is for you to be able to hide how many records you have, for business
 purposes, but also to make IDs non-predictable.
 
 This gem is built to work with Ruby 1.9, 2.0, 2.1 as well as with Rails 3.2, 4.0, 4.1 and 4.2. All of these cases are
-[continuously tested for](https://travis-ci.org/watu/random_unique_id).
+[continuously tested for](https://travis-ci.org/carouselapps/random_unique_id).
 
 ## Installation
 
@@ -125,7 +125,7 @@ This gem is being used by:
 - Started testing with Ruby 2.1.
 
 ### Version 0.1.0 (Jan 6, 2014)
-- Initial release of the code extracted from [Watu](http://github.com/watu).
+- Initial release of the code extracted from [Watu](http://watuapp.com).
 
 ## Contributing
 

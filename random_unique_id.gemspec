@@ -1,5 +1,5 @@
 # encoding: UTF-8
-# Copyright © 2013, 2014, 2015, Watu
+# Copyright © 2013, 2014, 2015, Carousel Apps
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.name          = "random_unique_id"
   spec.version       = RandomUniqueId::VERSION
   spec.authors       = ["J. Pablo Fernández", "Daniel Magliola"]
-  spec.email         = ["pupeno@watuapp.com"]
-  spec.homepage      = "https://github.com/watu/random_unique_id"
+  spec.email         = ["pupeno@carouselapps.com"]
+  spec.homepage      = "https://github.com/carouselapps/random_unique_id"
   spec.summary       = %q{Generate random but unique ids for your active record records.}
   spec.description   = %q{Generate random but unique ids for your active record records.}
   spec.license       = "MIT"

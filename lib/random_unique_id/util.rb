@@ -1,4 +1,4 @@
-# Copyright © 2014, 2015, Watu
+# Copyright © 2014, 2015, Carousel Apps
 
 # Some utilities that might be useful if you are using RandomUniqueId. This file needs to be explicitely included:
 #
@@ -32,7 +32,7 @@ module RandomUniqueId::Util
         end
         puts "==  Setting initial ids to #{initial_id} (done)  ".ljust(79, "=") if verbose
       else
-        raise "Don't know how to set initial ids for #{sql_connection.adapter_name}. Would you like to contribute? https://github.com/watu/random_unique_id"
+        raise "Don't know how to set initial ids for #{sql_connection.adapter_name}. Would you like to contribute? https://github.com/carouselapps/random_unique_id"
     end
   end
 end

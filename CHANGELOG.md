@@ -23,4 +23,4 @@ Authoritative changelog in README.md.
 - Started testing with Ruby 2.1.
 
 ## Version 0.1.0 (Jan 6, 2014)
-- Initial release of the code extracted from [Watu](http://github.com/watu).
+- Initial release of the code extracted from [Watu](http://watuapp.com).
